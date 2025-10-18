@@ -1,0 +1,20 @@
+# Gradle / builds
+.gradle/
+**/build/
+captures/
+
+# Android Studio
+.idea/caches/
+.idea/libraries/
+.idea/workspace.xml
+.idea/assetWizardSettings.xml
+.idea/navEditor.xml
+.idea/gradle.xml
+.idea/deploymentTargetDropDown.xml
+
+# Local machine config
+local.properties
+
+# Misc
+*.iml
+

@@ -1,21 +1,25 @@
 package com.example.devquiz
 
 import android.content.Intent
+import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -26,11 +30,25 @@ import androidx.compose.ui.unit.dp
  * No interactivity required (scrollable text is enough).
  */
 class HelpActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MaterialTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { inner ->
+                val context = LocalContext.current
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    topBar = {
+                        TopAppBar(
+                            title = { Text("Help") },
+                            navigationIcon = {
+                                TextButton(onClick = { (context as? Activity)?.finish() }) {
+                                    Text("Back")
+                                }
+                            }
+                        )
+                    }
+                ) { inner ->
                     HelpScreen(modifier = Modifier.padding(inner))
                 }
             }
@@ -47,14 +65,20 @@ fun HelpScreen(modifier: Modifier = Modifier) {
             .verticalScroll(rememberScrollState())
             .padding(24.dp)
     ) {
-        Text("Help", style = MaterialTheme.typography.headlineSmall)
+        Text("About DevQuiz", style = MaterialTheme.typography.headlineSmall)
         Spacer(Modifier.height(12.dp))
         Text(
             """
-            • About the app – DevQuiz is a simple multiple-choice quiz designed for developers.
-            • How it works – From the Main screen you enter your name, select number of questions and difficulty, and start the quiz.
-            • Preferences – You can change default difficulty, default number of questions, turn on/off explanations, and shuffle questions.
-              In Module 6 these settings will be saved and automatically applied when you reopen the app.
+            • What it is – DevQuiz is a simple multiple-choice quiz for developers.
+            • How it works – On the Main screen, enter your name, choose a difficulty 
+              (Basic / Intermediate / Advanced) and the number of questions (default 5), 
+              then tap “Start Quiz”.
+            • Preferences – From the Preferences screen you can set default difficulty 
+              and default number of questions, and toggle “Show explanations” and 
+              “Shuffle questions”. These settings are applied when you start a new quiz.
+            • Quiz flow – Each quiz presents 5 questions for the selected difficulty. 
+              After answering, a result screen shows your score (e.g., “You answered 3 of 5”). 
+              You can finish (go back Home) or try again.
             """.trimIndent(),
             style = MaterialTheme.typography.bodyMedium
         )

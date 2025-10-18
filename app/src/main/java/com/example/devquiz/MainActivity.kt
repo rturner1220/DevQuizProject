@@ -38,7 +38,6 @@ import androidx.compose.ui.unit.dp
 /**
  * Entry point activity. It renders the home screen where the user:
  * - types their name
- * - picks number of questions (5 or 10)
  * - picks difficulty (basic / intermediate / advanced)
  * - navigates to Quiz, Preferences, or Help screens
  */
@@ -66,7 +65,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
     var name by remember { mutableStateOf(TextFieldValue("")) }
 
     // Question count dropdown
-    val counts = listOf("5", "10")
+    val counts = listOf("5")
     var countExpanded by remember { mutableStateOf(false) }
     var selectedCount by remember { mutableStateOf(counts.first()) }
 

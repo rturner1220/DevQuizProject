@@ -1,6 +1,7 @@
 package com.example.devquiz
 
 import android.content.Intent
+import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,9 +12,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.MaterialTheme
@@ -22,6 +23,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,7 +44,21 @@ class PreferencesActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MaterialTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { inner ->
+                val context = LocalContext.current
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    topBar = {
+                        TopAppBar(
+                            title = { Text("Preferences") },
+                            navigationIcon = {
+                                // Small "Back" action in the app bar
+                                TextButton(onClick = { (context as? Activity)?.finish() }) {
+                                    Text("Back")
+                                }
+                            }
+                        )
+                    }
+                ) { inner ->
                     PreferencesScreen(modifier = Modifier.padding(inner))
                 }
             }
@@ -60,9 +77,9 @@ fun PreferencesScreen(modifier: Modifier = Modifier) {
     var defaultLevel by remember { mutableStateOf(levels.first()) }
 
     // Number of questions (you can keep 5/10 only if you prefer)
-    val counts = listOf("5", "10", "15", "20")
+    val counts = listOf("5")
     var countExpanded by remember { mutableStateOf(false) }
-    var defaultCount by remember { mutableStateOf("10") }
+    var defaultCount by remember { mutableStateOf("5") }
 
     var showExplanations by remember { mutableStateOf(false) }
     var shuffleQuestions by remember { mutableStateOf(true) }
@@ -74,8 +91,6 @@ fun PreferencesScreen(modifier: Modifier = Modifier) {
             .padding(24.dp),
         verticalArrangement = Arrangement.Top
     ) {
-        Text("Preferences", style = MaterialTheme.typography.headlineSmall)
-        Spacer(Modifier.height(16.dp))
 
         // Default difficulty
         Text("Default difficulty")
@@ -123,7 +138,7 @@ fun PreferencesScreen(modifier: Modifier = Modifier) {
                     .menuAnchor()
                     .fillMaxWidth()
             )
-            DropdownMenu(
+            ExposedDropdownMenu(
                 expanded = countExpanded,
                 onDismissRequest = { countExpanded = false }
             ) {
@@ -163,7 +178,7 @@ fun PreferencesScreen(modifier: Modifier = Modifier) {
             onCheckedChange = { darkTheme = it }
         )
 
-        Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(8.dp))
 
         // Back button (outside of any dropdowns)
         Button(
@@ -178,7 +193,7 @@ fun PreferencesScreen(modifier: Modifier = Modifier) {
 
         Spacer(Modifier.height(8.dp))
         Text(
-            text = "Note: In Module 6 these preferences will be persisted and loaded automatically.",
+            text = "Note: In Module 8 these preferences will be persisted and loaded automatically.",
             style = MaterialTheme.typography.bodySmall
         )
     }
